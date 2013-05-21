@@ -4,8 +4,9 @@ Feature: Change User Role
   I want to change the user's role
 
   Scenario: Administrator changes a user's role
-    Given I am an administrator with valid credentials
-    When I log into the application and view the user list
+    Given I am an administrator
+    And There are three known users
+    When I browse to the site
     And I click the change roles link for a user
     Then I should see the change roles screen for that user
     When I invert the user's roles
