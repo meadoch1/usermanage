@@ -116,10 +116,10 @@ describe UsersController do
         assigns(:user).should eq(user)
       end
 
-      it "redirects to the user" do
+      it "redirects to the user index" do
         user = User.create! valid_attributes
         put :update, {:id => user.to_param, :user => valid_attributes}, valid_session
-        response.should redirect_to(user)
+        response.should redirect_to(users_url)
       end
     end
 
@@ -154,6 +154,58 @@ describe UsersController do
       user = User.create! valid_attributes
       delete :destroy, {:id => user.to_param}, valid_session
       response.should redirect_to(users_url)
+    end
+  end
+
+  describe "GET edit_password" do
+    it "assigns the requested user as @user" do
+      user = User.create! valid_attributes
+      get :edit_password, {:id => user.to_param}, valid_session
+      assigns(:user).should eq(user)
+    end
+  end
+
+  describe "PUT update_password" do
+    describe "with valid params" do
+      it "updates the requested user" do
+        user = User.create! valid_attributes
+        # Assuming there are no other users in the database, this
+        # specifies that the User created on the previous line
+        # receives the :update_attributes message with whatever params are
+        # submitted in the request.
+        User.any_instance.should_receive(:update_attributes).with({ "password" => "newpass", "password_confirmation" => "newpass" })
+        put :update_password, {:id => user.to_param, :user => { "password" => "newpass", "password_confirmation" => "newpass" }}, valid_session
+      end
+
+      it "assigns the requested user as @user" do
+        user = User.create! valid_attributes
+        put :update_password, {:id => user.to_param, :user => valid_attributes}, valid_session
+        assigns(:user).should eq(user)
+      end
+
+      it "redirects to the user index" do
+        user = User.create! valid_attributes
+        put :update_password, {:id => user.to_param, :user => valid_attributes}, valid_session
+        response.should redirect_to(users_url)
+      end
+    end
+
+    describe "with invalid params" do
+      it "assigns the user as @user" do
+        user = User.create! valid_attributes
+        # Trigger the behavior that occurs when invalid params are submitted
+        User.any_instance.stub(:save).and_return(false)
+        put :update_password, {:id => user.to_param, :user => { "password" => "newpass", "password_confirmation" => "newpass" }}, valid_session
+        assigns(:user).should eq(user)
+      end
+
+      it "re-renders the 'edit_password' template" do
+        user = User.create! valid_attributes
+        # Trigger the behavior that occurs when invalid params are submitted
+        User.any_instance.stub(:save).and_return(false)
+        put :update_password, {:id => user.to_param, :user => { "password" => "newpass", "password_confirmation" => "newpass" }}, valid_session
+        response.should render_template("edit_password")
+      end
     end
   end
 

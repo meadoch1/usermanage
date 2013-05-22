@@ -71,6 +71,15 @@ def first_user_password_change_link
   find("a[href='/users/#{@users.first.id}/edit_password']")
 end
 
+def find_and_test_role_edit_checkbox(user, role)
+  element = find("#user_#{role.to_s}")
+  if user.send(role)
+    element.should be_checked
+  else
+    element.should_not be_checked
+  end
+end
+
 
 ### STEPS ###
 Given(/^I am an administrator$/) do
@@ -154,18 +163,32 @@ Then(/^I should still see the change password screen$/) do
 end
 
 When(/^I click the change roles link for a user$/) do
+  @last_user_clicked = @users.first
   find("a[href='/users/#{@users.first.id}/edit']").click
 end
 
 Then(/^I should see the change roles screen for that user$/) do
-  pending # express the regexp above with the code you wish you had
+  current_url.should == edit_user_url(@last_user_clicked)
+  find_and_test_role_edit_checkbox(@last_user_clicked, :admin)
+  find_and_test_role_edit_checkbox(@last_user_clicked, :supervisor)
+  find_and_test_role_edit_checkbox(@last_user_clicked, :csr)
 end
 
 When(/^I invert the user's roles$/) do
-  pending # express the regexp above with the code you wish you had
+  @last_user_clicked.admin = !@last_user_clicked.admin
+  @last_user_clicked.supervisor = !@last_user_clicked.supervisor
+  @last_user_clicked.csr = !@last_user_clicked.csr
+
+  find('#user_admin').set(@last_user_clicked.admin)
+  find('#user_supervisor').set(@last_user_clicked.supervisor)
+  find('#user_csr').set(@last_user_clicked.csr)
 end
 
 Then(/^The user's roles should display the new settings$/) do
-  pending # express the regexp above with the code you wish you had
+  @users.each_with_index do |user, index|
+    has_css?("div##{user.id}_admin.icon-ok").should == user.admin
+    has_css?("div##{user.id}_supervisor.icon-ok").should == user.supervisor
+    has_css?("div##{user.id}_csr.icon-ok").should == user.csr
+  end
 end
 
