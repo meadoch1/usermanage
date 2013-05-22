@@ -1,23 +1,37 @@
-<h1>Listing users</h1>
-
-<table>
-  <tr>
-    <th>Name</th>
-    <th>Username</th>
-    <th></th>
-    <th></th>
-  </tr>
-
-<% @users.each do |user| %>
-  <tr>
-    <td><%= user.name %></td>
-    <td><%= user.username %></td>
-    <td><%= link_to 'Edit roles', edit_user_path(user) %></td>
-    <td><%= link_to 'Change password', edit_user_path(user) %></td>
-  </tr>
-<% end %>
+<%- model_class = User -%>
+<div class="page-header">
+  <h1><%=t '.title', :default => model_class.model_name.human.pluralize %></h1>
+</div>
+<table class="table table-striped table-condensed table-bordered">
+  <thead>
+    <tr>
+      <th><%= model_class.human_attribute_name(:id) %></th>
+      <th><%= model_class.human_attribute_name(:name) %></th>
+      <th><%= model_class.human_attribute_name(:username) %></th>
+      <th><%= model_class.human_attribute_name(:admin) %></th>
+      <th><%= model_class.human_attribute_name(:supervisor) %></th>
+      <th><%= model_class.human_attribute_name(:csr) %></th>
+      <th><%=t '.actions', :default => t("helpers.actions") %></th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @users.each do |user| %>
+      <tr>
+        <td><%= link_to user.id, user_path(user) %></td>
+        <td><%= user.name %></td>
+        <td><%= user.username %></td>
+        <td><%= div_for_boolean user.admin, "#{user.id}_admin" %></td>
+        <td><%= div_for_boolean user.supervisor, "#{user.id}_supervisor" %></td>
+        <td><%= div_for_boolean user.csr, "#{user.id}_csr" %></td>
+        <td>
+          <%= link_to 'Edit Roles', edit_user_path(user), :class => 'btn btn-mini' %>
+          <%= link_to 'Change Password', edit_user_password_path(user), :class => 'btn btn-mini' %>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
 </table>
 
-<br />
-
-<%= link_to 'New User', new_user_path %>
+<%= link_to t('.new', :default => t("helpers.links.new")),
+            new_user_path,
+            :class => 'btn btn-primary' %>

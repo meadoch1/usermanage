@@ -1,6 +1,8 @@
 Usermanage::Application.routes.draw do
   resources :users
 
+  get 'users/:id/edit_password' => 'users#edit_password', as: 'edit_user_password'
+  put 'users/:id/password' => 'users#update_password', as: 'update_user_password'
   root to: 'users#index'
 
   # The priority is based upon order of creation:

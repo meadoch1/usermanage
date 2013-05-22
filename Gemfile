@@ -20,8 +20,13 @@ group :development, :test do
   gem 'cucumber-rails', require: false
   gem 'database_cleaner'
   gem 'rspec-rails', '~> 2.13.2'
+
+  gem 'less-rails'
+  gem 'therubyracer'
 #  gem 'pry'
 end
+
+gem 'twitter-bootstrap-rails'
 
 # To use ActiveModel has_secure_password
 gem 'bcrypt-ruby', '~> 3.0.0'

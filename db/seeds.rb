@@ -5,7 +5,7 @@
 #
 #   cities = City.create([{ name: 'Chicago' }, { name: 'Copenhagen' }])
 #   Mayor.create(name: 'Emanuel', city: cities.first)
-User.find_or_create_by_username(username: 'seedadmin', name: 'Seed Admin', password: 'mypass', password_confirmation: 'mypass')
-User.find_or_create_by_username(username: 'seedcsr', name: 'Seed CSR', password: 'mypass', password_confirmation: 'mypass')
-User.find_or_create_by_username(username: 'seeduser', name: 'Seed User', password: 'mypass', password_confirmation: 'mypass')
+User.find_or_create_by_username(username: 'seedadmin', name: 'Seed Admin', password: 'mypass', password_confirmation: 'mypass', admin: true)
+User.find_or_create_by_username(username: 'seedcsr', name: 'Seed CSR', password: 'mypass', password_confirmation: 'mypass', csr: true)
+User.find_or_create_by_username(username: 'seedsupervisor', name: 'Seed Supervisor', password: 'mypass', password_confirmation: 'mypass', supervisor: true)
 
