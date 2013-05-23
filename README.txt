@@ -20,3 +20,6 @@ Development and System Admin Security Notes:
    can adjust this by altering the Gemfile and config/database.yml to
    your needs.
 
+*  To setup a new database issue the following commands:
+       rake db:migrate
+       rake db:seed
